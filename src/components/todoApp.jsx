@@ -10,45 +10,37 @@ const TodoApp = () => {
   useEffect(() => {
     const fetchTodos = async () => {
 
-      const querySnap = await getDocs(collection(db, "todos")); 
-      
+      const querySnap = await getDocs(collection(db, "todos"));
+
       const allTodos = querySnap.docs.map((doc) => ({
-        id: doc.id, 
-       ...doc.data()
+        id: doc.id,
+        ...doc.data()
       }));
 
-      console.log(allTodos); 
-      setTodos(allTodos); 
-  };
+      console.log(allTodos);
+      setTodos(allTodos);
+    };
 
     fetchTodos();
-  },[]);
+  }, []);
 
   // Add New To-Do
   const addTodo = async () => {
     if (newTodo) {
-        const text = newTodo.toString(); // Ensure you're calling the method
-        const docRef = await addDoc(collection(db, "todos"), {
-            
-            text: text // Pass it as an object with a 'text' field
-            
-          }
-          
-        );
-        setTodos([...todos, { id: docRef.id, text: newTodo }]);
-        console.log("ID: "+ docRef.id)
-        
-      } else {
-        alert("Input Value");
+      const text = newTodo.toString(); // Ensure you're calling the method
+      const docRef = await addDoc(collection(db, "todos"), {
+
+        text: text // Pass it as an object with a 'text' field
+
       }
-      
-     
-    
-   
-   
-    // if (newTodo.trim() === "") return;
-    // const docRef = await addDoc(collection(db, "todos"), { text: newTodo, completed: false });
-    // setNewTodo("");
+
+      );
+      setTodos([...todos, {id: docRef.id, text: text}]);
+      console.log("ID: " + docRef.id)
+      setNewTodo("");
+    } else {
+      alert("Input Value");
+    }
   };
 
 
@@ -57,6 +49,12 @@ const TodoApp = () => {
     await deleteDoc(doc(db, "todos", id));
     setTodos(todos.filter(todo => todo.id !== id))
   };
+
+  // Edit To do
+  const editTodo = (id) =>{
+      // newTodo = todo.id
+  
+    }
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
