@@ -35,7 +35,7 @@ const TodoApp = () => {
       }
 
       );
-      setTodos([...todos, {id: docRef.id, text: text}]);
+      setTodos([{id: docRef.id, text: text}, ...todos]);
       console.log("ID: " + docRef.id)
       setNewTodo("");
     } else {
@@ -51,9 +51,9 @@ const TodoApp = () => {
   };
 
   // Edit To do
-  const editTodo = (id) =>{
-      // newTodo = todo.id
-  
+  const editTodo = async (id) =>{
+
+   
     }
 
   return (
@@ -65,6 +65,7 @@ const TodoApp = () => {
         onChange={(e) => setNewTodo(e.target.value)}
         placeholder="Add a new task"
       />
+      
       <button onClick={addTodo}>Add</button>
       <ul>
         {todos.map(todo => (
