@@ -4,6 +4,9 @@ import { db, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "../f
 
 const TodoApp = () => {
   const [todos, setTodos] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [check, setCheck] = useState(false);
+
   const [newTodo, setNewTodo] = useState("");
 
   // Fetch To-Dos from Firestore
@@ -51,9 +54,24 @@ const TodoApp = () => {
   };
 
   // Edit To do
-  const editTodo = async (id) =>{
+  const editTodo = async (id, text) =>{
 
-   
+      setEditId(id);    // Store ID to track which todo is being edited
+      setNewTodo(text); // Fill input with the selected todo's text
+      setCheck(true)
+      
+    }
+    const updateTodo = async () =>{
+      
+      const todoRef = doc(db, "todos", editId);
+      await updateDoc (todoRef, {text: newTodo});
+
+      setTodos(todos.map((todo) =>
+        todo.id == editId ? { ...todo, text: newTodo } : todo));
+
+
+      setNewTodo("");
+      setCheck(false)
     }
 
   return (
@@ -65,14 +83,18 @@ const TodoApp = () => {
         onChange={(e) => setNewTodo(e.target.value)}
         placeholder="Add a new task"
       />
-      
-      <button onClick={addTodo}>Add</button>
+      { (check)?
+        <button onClick={updateTodo}>Update</button>:
+        <button onClick={addTodo}>Add</button>
+      }
+
       <ul>
         {todos.map(todo => (
           <li key={todo.id}>
             <label >{todo.text}</label>
             <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-            <button onClick={() => editTodo(todo.id)}>Edit</button>
+            <button onClick={() => editTodo(todo.id, todo.text)}>Edit</button>
+
           </li>
         ))}
       </ul>
@@ -81,16 +103,3 @@ const TodoApp = () => {
 }
 
 export default TodoApp;
-
-
-
-
-
-
-
-
-
-
-
-
-
