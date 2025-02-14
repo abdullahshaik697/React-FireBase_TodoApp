@@ -1,0 +1,25 @@
+*{
+    font-family: tahoma;
+}
+
+#todoContainer{
+display: flex;
+flex-direction: column;
+/* border: 1px solid green; */
+/* justify-content: center; */
+align-items: center;
+}
+
+#todo{
+    border: 1px solid black;
+    margin: 20px;
+    width: 450px;
+    border-radius: 20px;
+    padding: 10px 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#todoText{padding: 8px;
+    font-size: 1.2rem;
+}

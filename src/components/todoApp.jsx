@@ -1,6 +1,7 @@
-
+import "./todoApp.css"
 import React, { useState, useEffect } from "react";
-import {Button} from "@mui/material"
+import {Button, TextField} from "@mui/material"
+
 import { db, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "../firebase";
 
 const TodoApp = () => {
@@ -79,24 +80,29 @@ const TodoApp = () => {
       <div style={{ textAlign: "center", marginTop: "50px" }}>
      
       <h1>To-Do App</h1>
-      <input
+      <TextField
+        id="outlined-basic"
         type="text"
+        label="Add Todo"
+        variant="outlined"
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}
-        placeholder="Add a new task"
+        placeholder="Type your todo here"
       />
       { (check)?
         <Button variant="contained" onClick={updateTodo}>Update</Button>:
        
         <Button variant="contained" onClick={addTodo}>Add</Button>
       }
-      <ul>
+      <ul id="todoContainer">
         {todos.map(todo => (
-          <div key={todo.id}>
-            <label >{todo.text}</label>
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-            <button onClick={() => editTodo(todo.id, todo.text)}>Edit</button>
-
+          <div key={todo.id} id="todo">
+            <label id="todoText">{todo.text}</label>
+            <div >
+            <Button variant="contained" style={{color:"white", background:"red"}} onClick={() => deleteTodo(todo.id)}>Delete</Button>
+            <Button variant="contained" style={{color:"white", background:"purple"}} onClick={() => editTodo(todo.id, todo.text)}>Edit</Button>
+            </div>
+           
           </div>
         ))}
       </ul>
