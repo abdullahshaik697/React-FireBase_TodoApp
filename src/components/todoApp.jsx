@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import {Button} from "@mui/material"
 import { db, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "../firebase";
 
 const TodoApp = () => {
@@ -56,26 +57,27 @@ const TodoApp = () => {
   // Edit To do
   const editTodo = async (id, text) =>{
 
-      setEditId(id);    // Store ID to track which todo is being edited
-      setNewTodo(text); // Fill input with the selected todo's text
+      setEditId(id);       // Store ID to track which todo is being edited
+      setNewTodo(text);    // Fill input with the selected todo's text
       setCheck(true)
       
     }
     const updateTodo = async () =>{
       
       const todoRef = doc(db, "todos", editId);
-      await updateDoc (todoRef, {text: newTodo});
+      await updateDoc (todoRef, {text: newTodo}); //update in firestore
 
       setTodos(todos.map((todo) =>
-        todo.id == editId ? { ...todo, text: newTodo } : todo));
+      todo.id == editId ? { ...todo, text: newTodo } : todo));  //update in UI
 
 
       setNewTodo("");
       setCheck(false)
     }
-
-  return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
+    
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+     
       <h1>To-Do App</h1>
       <input
         type="text"
@@ -84,18 +86,18 @@ const TodoApp = () => {
         placeholder="Add a new task"
       />
       { (check)?
-        <button onClick={updateTodo}>Update</button>:
-        <button onClick={addTodo}>Add</button>
+        <Button variant="contained" onClick={updateTodo}>Update</Button>:
+       
+        <Button variant="contained" onClick={addTodo}>Add</Button>
       }
-
       <ul>
         {todos.map(todo => (
-          <li key={todo.id}>
+          <div key={todo.id}>
             <label >{todo.text}</label>
             <button onClick={() => deleteTodo(todo.id)}>Delete</button>
             <button onClick={() => editTodo(todo.id, todo.text)}>Edit</button>
 
-          </li>
+          </div>
         ))}
       </ul>
     </div>
